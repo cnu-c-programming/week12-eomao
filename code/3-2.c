@@ -10,7 +10,14 @@ int main(int argc, const char* argv[]) {
 
     FILE* fp = fopen(filename, "r");
 
+    if (fp == NULL)
+        return 0;
+
+    fgets(buffer, sizeof(buffer), fp);
+
+    printf("%s", buffer);
+
+    fclose(fp);
 
     return 0;
 }
-
