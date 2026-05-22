@@ -12,14 +12,14 @@ int main(int argc, const char* argv[]) {
     int sum = 0;
     char buffer[64];
 
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-        int number;
-        char extra;
+    while (fscanf(fp, "%63s", buffer) == 1) {
+        char* endptr;
+        int num = (int)strtol(buffer, &endptr, 10);
 
-        if (sscanf(buffer, "%d %c", &number, &extra) == 1) {
-            sum += number;
+        if (*endptr == '\0') {
+            sum += num;
         } else {
-            fprintf(stderr, "invalid input: %s", buffer);
+            fprintf(stderr, "invalid input %s\n", buffer);
         }
     }
 
