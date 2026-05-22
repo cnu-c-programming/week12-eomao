@@ -8,8 +8,18 @@ int main(int argc, const char* argv[]) {
     FILE* fp = fopen(argv[1], "r");
     const char* target_str = argv[2];
 
+    if (fp == NULL)
+        return 0;
 
-    
+    char line[1024];
+
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        if (strstr(line, target_str) != NULL) {
+            printf("%s", line);
+        }
+    }
+
     fclose(fp);
-}
 
+    return 0;
+}
