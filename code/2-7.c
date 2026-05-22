@@ -10,11 +10,38 @@ typedef struct config {
 } Config;
 
 void config_parser(Config* config_ptr) {
+    FILE* fp = fopen("config.txt", "r");
 
+    if (fp == NULL) {
+        return;
+    }
+
+    char line[256];
+
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        char key[64] = { 0 };
+        char value[64] = { 0 };
+
+        if (sscanf(line, "%63[^=]=%63s", key, value) != 2) {
+            continue;
+        }
+
+        if (strcmp(key, "InputFileName") == 0) {
+            strcpy(config_ptr->InputFileName, value);
+        } else if (strcmp(key, "Options") == 0) {
+            config_ptr->Options = atoi(value);
+        } else if (strcmp(key, "SectionName") == 0) {
+            strcpy(config_ptr->SectionName, value);
+        } else if (strcmp(key, "Address") == 0) {
+            config_ptr->Address = strtoull(value, NULL, 0);
+        }
+    }
+
+    fclose(fp);
 }
 
 int main(int argc, const char* argv[]) {
-    Config config;
+    Config config = { 0 };
     config_parser(&config);
 
     printf("config: %s %d %s %llu\n", 
@@ -22,6 +49,6 @@ int main(int argc, const char* argv[]) {
         config.Options,
         config.SectionName,
         config.Address);
+
     return 0;
 }
-
