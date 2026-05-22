@@ -6,6 +6,12 @@ int main(int argc, const char* argv[]) {
     
     FILE* fp = fopen(argv[1], "r");
 
+    if (fp == NULL) {
+        fprintf(stderr, "file does not exist\n");
+        return 1;
+    }
+
+    fclose(fp);
 
     return 0;
 }
